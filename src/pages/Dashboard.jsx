@@ -54,7 +54,7 @@ function Dashboard() {
   return (
     <>
       {/* Page Heading */}
-      <h1 className="text-4xl font-bold text-gray-800 mb-8">
+      <h1 className="mb-6 text-3xl font-bold text-white sm:text-4xl md:mb-8">
         Dashboard
       </h1>
 

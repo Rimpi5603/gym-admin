@@ -1,7 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import PublicPage from "./pages/PublicPage";
+import Contact from "./pages/Contact";
+import PlansPage from "./pages/PlansPage";
+import Shop from "./pages/Shop";
 
 import Members from "./pages/members/Members";
 import AddMember from "./pages/members/AddMember";
@@ -22,8 +27,14 @@ import AdminLayout from "./layouts/AdminLayout";
 function App() {
   return (
     <Routes>
-      {/* Public Route */}
-      <Route path="/" element={<Login />} />
+      {/* Public Routes */}
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/pages" element={<PublicPage title="Pages" />} />
+      <Route path="/blog" element={<PublicPage title="Blog" />} />
+      <Route path="/shop" element={<Shop />} />
+      <Route path="/plans" element={<PlansPage />} />
+      <Route path="/contacts" element={<Contact />} />
 
       {/* Protected Routes */}
       <Route
@@ -38,9 +49,9 @@ function App() {
         <Route path="/members/add" element={<AddMember />} />
         <Route path="/members/edit/:id" element={<EditMember />} />
 
-        <Route path="/plans" element={<Plans />} />
-        <Route path="/plans/add" element={<AddPlan />} />
-        <Route path="/plans/edit/:id" element={<EditPlan />} />
+        <Route path="/admin/plans" element={<Plans />} />
+        <Route path="/admin/plans/add" element={<AddPlan />} />
+        <Route path="/admin/plans/edit/:id" element={<EditPlan />} />
         <Route path="/subscriptions" element={<Subscriptions />} />
         <Route path="/payments" element={<Payments />} />
         <Route path="/attendance" element={<Attendance />} />

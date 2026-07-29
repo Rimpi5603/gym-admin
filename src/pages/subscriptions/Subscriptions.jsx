@@ -50,11 +50,11 @@ function Subscriptions() {
   const getStatusBadge = (status) => {
     switch (status) {
       case "Active":
-        return <span className="bg-green-100 text-green-700 py-1 px-3 rounded-full text-xs font-semibold">Active</span>;
+        return <span className="bg-green-900/50 text-green-400 py-1 px-3 rounded-full text-xs font-semibold border border-green-800">Active</span>;
       case "Expiring Soon":
-        return <span className="bg-yellow-100 text-yellow-700 py-1 px-3 rounded-full text-xs font-semibold">Expiring Soon</span>;
+        return <span className="bg-yellow-900/50 text-yellow-400 py-1 px-3 rounded-full text-xs font-semibold border border-yellow-800">Expiring Soon</span>;
       case "Expired":
-        return <span className="bg-red-100 text-red-700 py-1 px-3 rounded-full text-xs font-semibold">Expired</span>;
+        return <span className="bg-red-900/50 text-red-400 py-1 px-3 rounded-full text-xs font-semibold border border-red-800">Expired</span>;
       default:
         return null;
     }
@@ -62,11 +62,11 @@ function Subscriptions() {
 
   return (
     <div>
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">
+      <h1 className="text-4xl font-bold text-white mb-6">
         Subscriptions
       </h1>
 
-      <div className="bg-white rounded-xl shadow-md p-6 overflow-hidden">
+      <div className="bg-slate-800 border border-slate-700 rounded-xl shadow-md p-6 overflow-hidden">
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <FaSpinner className="animate-spin text-4xl text-blue-600" />
@@ -75,19 +75,19 @@ function Subscriptions() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-100 text-gray-700 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 font-semibold">Member</th>
-                  <th className="py-3 px-6 font-semibold">Plan</th>
-                  <th className="py-3 px-6 font-semibold">Start Date</th>
-                  <th className="py-3 px-6 font-semibold">End Date</th>
-                  <th className="py-3 px-6 font-semibold text-center">Status</th>
-                  <th className="py-3 px-6 font-semibold text-center">Action</th>
+                <tr className="bg-slate-700 text-gray-300 uppercase text-sm leading-normal">
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Member</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Plan</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Start Date</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">End Date</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600 text-center">Status</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600 text-center">Action</th>
                 </tr>
               </thead>
-              <tbody className="text-gray-600 text-sm font-light">
+              <tbody className="text-gray-300 text-sm font-light">
                 {subscriptions.map((sub) => (
-                  <tr key={sub.id} className="border-b border-gray-200 hover:bg-gray-50 transition">
-                    <td className="py-3 px-6 font-medium text-gray-800">
+                  <tr key={sub.id} className="border-b border-slate-700 hover:bg-slate-700/50 transition">
+                    <td className="py-3 px-6 font-medium text-white">
                       {sub.memberName}
                     </td>
                     <td className="py-3 px-6">
@@ -103,7 +103,7 @@ function Subscriptions() {
                       {getStatusBadge(sub.status)}
                     </td>
                     <td className="py-3 px-6 text-center">
-                      <button className="text-blue-600 hover:text-blue-800 font-medium">Manage</button>
+                      <button className="text-blue-400 hover:text-blue-300 font-medium">Manage</button>
                     </td>
                   </tr>
                 ))}

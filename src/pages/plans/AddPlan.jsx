@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { getPlans, parseFeatures, savePlans } from "./planStorage";
 
 function AddPlan() {
   const navigate = useNavigate();
-  
   const [formData, setFormData] = useState({
     name: "",
     duration: "",
@@ -12,119 +12,164 @@ function AddPlan() {
     features: "",
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Get existing plans
-    const storedPlans = JSON.parse(localStorage.getItem("gymPlans")) || [];
-    
-    // Create new plan with unique ID
+  const handleSubmit = (event) => {
+    event.preventDefault();
     const newPlan = {
-      id: Date.now(), // Generate unique ID
-      name: formData.name,
-      duration: parseInt(formData.duration),
-      price: parseInt(formData.price),
-      features: formData.features,
+      id: Date.now(),
+      name: formData.name.trim(),
+      duration: Number(formData.duration),
+      price: Number(formData.price),
+      features: parseFeatures(formData.features),
     };
-    
-    // Save to local storage
-    localStorage.setItem("gymPlans", JSON.stringify([...storedPlans, newPlan]));
-    
-    // Navigate back to plans list
-    navigate("/plans");
+
+    savePlans([...getPlans(), newPlan]);
+    navigate("/admin/plans");
   };
 
   return (
-    <div>
-      <div className="flex items-center mb-6">
-        <Link to="/plans" className="text-gray-500 hover:text-blue-600 transition mr-4">
-          <FaArrowLeft className="text-xl" />
-        </Link>
-        <h1 className="text-4xl font-bold text-gray-800">
-          Add New Plan
-        </h1>
-      </div>
+    <PlanForm
+      title="Create Plan"
+      submitLabel="Create Plan"
+      formData={formData}
+      setFormData={setFormData}
+      onSubmit={handleSubmit}
+    />
+  );
+}
 
-      <div className="bg-white rounded-xl shadow-md p-6 sm:p-8 max-w-2xl">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          
+export function PlanForm({
+  title,
+  submitLabel,
+  formData,
+  setFormData,
+  onSubmit,
+}) {
+  const inputClass =
+    "w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30";
+  const handleChange = (event) =>
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+
+  return (
+    <div className="mx-auto max-w-3xl">
+      <header className="mb-6 flex items-center">
+        <Link
+          to="/admin/plans"
+          aria-label="Back to plans"
+          className="mr-4 rounded-lg border border-slate-700 p-3 text-slate-400 transition hover:bg-slate-800 hover:text-white"
+        >
+          <FaArrowLeft />
+        </Link>
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-wider text-blue-400">
+            Membership management
+          </p>
+          <h1 className="text-3xl font-bold text-white sm:text-4xl">{title}</h1>
+        </div>
+      </header>
+
+      <form
+        onSubmit={onSubmit}
+        className="space-y-6 rounded-2xl border border-slate-700 bg-slate-800 p-6 shadow-xl sm:p-8"
+      >
+        <div>
+          <label
+            htmlFor="name"
+            className="mb-2 block font-medium text-slate-200"
+          >
+            Plan Name
+          </label>
+          <input
+            id="name"
+            name="name"
+            required
+            maxLength="60"
+            placeholder="e.g. Premium Membership"
+            value={formData.name}
+            onChange={handleChange}
+            className={inputClass}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
-            <label className="block mb-2 font-medium text-gray-700">Plan Name</label>
+            <label
+              htmlFor="duration"
+              className="mb-2 block font-medium text-slate-200"
+            >
+              Duration (Months)
+            </label>
             <input
-              type="text"
-              name="name"
+              id="duration"
+              type="number"
+              name="duration"
               required
-              placeholder="e.g. Premium Membership"
-              value={formData.name}
+              min="1"
+              max="120"
+              placeholder="e.g. 6"
+              value={formData.duration}
               onChange={handleChange}
-              className="w-full box-border rounded-lg border border-gray-300 py-3 px-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
+              className={inputClass}
             />
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <label className="block mb-2 font-medium text-gray-700">Duration (Months)</label>
-              <input
-                type="number"
-                name="duration"
-                required
-                min="1"
-                placeholder="e.g. 6"
-                value={formData.duration}
-                onChange={handleChange}
-                className="w-full box-border rounded-lg border border-gray-300 py-3 px-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
-              />
-            </div>
-            
-            <div>
-              <label className="block mb-2 font-medium text-gray-700">Price (₹)</label>
-              <input
-                type="number"
-                name="price"
-                required
-                min="0"
-                placeholder="e.g. 5000"
-                value={formData.price}
-                onChange={handleChange}
-                className="w-full box-border rounded-lg border border-gray-300 py-3 px-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
-              />
-            </div>
-          </div>
-
           <div>
-            <label className="block mb-2 font-medium text-gray-700">Features (comma separated)</label>
-            <textarea
-              name="features"
+            <label
+              htmlFor="price"
+              className="mb-2 block font-medium text-slate-200"
+            >
+              Price (₹)
+            </label>
+            <input
+              id="price"
+              type="number"
+              name="price"
               required
-              rows="3"
-              placeholder="e.g. Cardio, Weights, Personal Trainer"
-              value={formData.features}
+              min="0"
+              step="1"
+              placeholder="e.g. 5000"
+              value={formData.price}
               onChange={handleChange}
-              className="w-full box-border rounded-lg border border-gray-300 py-3 px-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition resize-none"
-            ></textarea>
+              className={inputClass}
+            />
           </div>
+        </div>
 
-          <div className="flex gap-4 pt-4">
-            <Link 
-              to="/plans"
-              className="flex-1 text-center bg-gray-100 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
-            >
-              Cancel
-            </Link>
-            <button
-              type="submit"
-              className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-            >
-              Save Plan
-            </button>
-          </div>
+        <div>
+          <label
+            htmlFor="features"
+            className="mb-1 block font-medium text-slate-200"
+          >
+            Features
+          </label>
+          <p className="mb-2 text-sm text-slate-400">
+            Separate each benefit with a comma.
+          </p>
+          <textarea
+            id="features"
+            name="features"
+            required
+            rows="4"
+            placeholder="Cardio, Weights, Personal Trainer"
+            value={formData.features}
+            onChange={handleChange}
+            className={`${inputClass} resize-none`}
+          />
+        </div>
 
-        </form>
-      </div>
+        <div className="grid grid-cols-2 gap-3 border-t border-slate-700 pt-6">
+          <Link
+            to="/admin/plans"
+            className="rounded-lg border border-slate-600 py-3 text-center font-semibold text-white transition hover:bg-slate-700"
+          >
+            Cancel
+          </Link>
+          <button
+            type="submit"
+            className="rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            {submitLabel}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

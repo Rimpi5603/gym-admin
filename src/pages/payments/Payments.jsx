@@ -46,11 +46,11 @@ function Payments() {
   const getStatusBadge = (status) => {
     switch (status) {
       case "Paid":
-        return <span className="bg-green-100 text-green-700 py-1 px-3 rounded-full text-xs font-semibold">Paid</span>;
+        return <span className="bg-green-900/50 text-green-400 py-1 px-3 rounded-full text-xs font-semibold border border-green-800">Paid</span>;
       case "Pending":
-        return <span className="bg-yellow-100 text-yellow-700 py-1 px-3 rounded-full text-xs font-semibold">Pending</span>;
+        return <span className="bg-yellow-900/50 text-yellow-400 py-1 px-3 rounded-full text-xs font-semibold border border-yellow-800">Pending</span>;
       case "Failed":
-        return <span className="bg-red-100 text-red-700 py-1 px-3 rounded-full text-xs font-semibold">Failed</span>;
+        return <span className="bg-red-900/50 text-red-400 py-1 px-3 rounded-full text-xs font-semibold border border-red-800">Failed</span>;
       default:
         return null;
     }
@@ -58,44 +58,44 @@ function Payments() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-bold text-gray-800">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-3xl font-bold text-white sm:text-4xl">
           Payments
         </h1>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center transition">
+        <button className="flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition hover:bg-blue-700 sm:w-auto">
           <FaDownload className="mr-2" /> Export
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-md p-6 overflow-hidden">
+      <div className="overflow-hidden rounded-xl border border-slate-700 bg-slate-800 p-4 shadow-md sm:p-6">
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <FaSpinner className="animate-spin text-4xl text-blue-600" />
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="min-w-[800px] w-full border-collapse text-left">
               <thead>
-                <tr className="bg-gray-100 text-gray-700 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 font-semibold">Transaction ID</th>
-                  <th className="py-3 px-6 font-semibold">Member</th>
-                  <th className="py-3 px-6 font-semibold">Amount</th>
-                  <th className="py-3 px-6 font-semibold">Date</th>
-                  <th className="py-3 px-6 font-semibold">Method</th>
-                  <th className="py-3 px-6 font-semibold text-center">Status</th>
-                  <th className="py-3 px-6 font-semibold text-center">Receipt</th>
+                <tr className="bg-slate-700 text-gray-300 uppercase text-sm leading-normal">
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Transaction ID</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Member</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Amount</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Date</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Method</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600 text-center">Status</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600 text-center">Receipt</th>
                 </tr>
               </thead>
-              <tbody className="text-gray-600 text-sm font-light">
+              <tbody className="text-gray-300 text-sm font-light">
                 {payments.map((payment) => (
-                  <tr key={payment.id} className="border-b border-gray-200 hover:bg-gray-50 transition">
-                    <td className="py-3 px-6 font-medium text-gray-800">
+                  <tr key={payment.id} className="border-b border-slate-700 hover:bg-slate-700/50 transition">
+                    <td className="py-3 px-6 font-medium text-white">
                       {payment.id}
                     </td>
                     <td className="py-3 px-6">
                       {payment.memberName}
                     </td>
-                    <td className="py-3 px-6 font-semibold text-gray-900">
+                    <td className="py-3 px-6 font-semibold text-white">
                       ₹{payment.amount}
                     </td>
                     <td className="py-3 px-6">
@@ -109,9 +109,9 @@ function Payments() {
                     </td>
                     <td className="py-3 px-6 text-center">
                       {payment.status === "Paid" ? (
-                        <button className="text-blue-600 hover:text-blue-800 font-medium hover:underline">View</button>
+                        <button className="text-blue-400 hover:text-blue-300 font-medium hover:underline">View</button>
                       ) : (
-                        <span className="text-gray-400">-</span>
+                        <span className="text-gray-500">-</span>
                       )}
                     </td>
                   </tr>

@@ -25,30 +25,30 @@ function Members() {
 
   return (
     <div>
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">
+      <h1 className="mb-6 text-3xl font-bold text-white sm:text-4xl">
         Members
       </h1>
 
-      <div className="bg-white rounded-xl shadow-md p-6 overflow-hidden">
+      <div className="overflow-hidden rounded-xl border border-slate-700 bg-slate-800 p-4 shadow-md sm:p-6">
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <FaSpinner className="animate-spin text-4xl text-blue-600" />
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="min-w-[650px] w-full border-collapse text-left">
               <thead>
-                <tr className="bg-gray-100 text-gray-700 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 font-semibold">Name</th>
-                  <th className="py-3 px-6 font-semibold">Email</th>
-                  <th className="py-3 px-6 font-semibold">Phone</th>
-                  <th className="py-3 px-6 font-semibold">City</th>
-                  <th className="py-3 px-6 font-semibold text-center">Status</th>
+                <tr className="bg-slate-700 text-gray-300 uppercase text-sm leading-normal">
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Name</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Email</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">Phone</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600">City</th>
+                  <th className="py-3 px-6 font-semibold border-b border-slate-600 text-center">Status</th>
                 </tr>
               </thead>
-              <tbody className="text-gray-600 text-sm font-light">
+              <tbody className="text-gray-300 text-sm font-light">
                 {members.map((member) => (
-                  <tr key={member.id} className="border-b border-gray-200 hover:bg-gray-50 transition">
+                  <tr key={member.id} className="border-b border-slate-700 hover:bg-slate-700/50 transition">
                     <td className="py-3 px-6">
                       <div className="flex items-center">
                         <span className="font-medium">{member.name}</span>
@@ -64,7 +64,7 @@ function Members() {
                       {member.address.city}
                     </td>
                     <td className="py-3 px-6 text-center">
-                      <span className="bg-green-100 text-green-700 py-1 px-3 rounded-full text-xs font-semibold">
+                      <span className="bg-green-900/50 text-green-400 py-1 px-3 rounded-full text-xs font-semibold border border-green-800">
                         Active
                       </span>
                     </td>
